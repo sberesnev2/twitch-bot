@@ -1,0 +1,27 @@
+name: Twitch View Script
+
+on:
+  workflow_dispatch:   # ручной запуск
+  schedule:
+    - cron: '0 */6 * * *'  # каждые 6 часов
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: |
+          pip install requests
+
+      - name: Run script
+        run: |
+          python twitch_view.py
