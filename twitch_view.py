@@ -3,11 +3,14 @@ import random
 import argparse
 from DrissionPage import ChromiumPage, ChromiumOptions
 
+# ================= НАСТРОЙКИ =================
 URL = 'https://www.twitch.tv/qqros/clip/DaintyGenerousDiamondDBstyle-kAJROjnc4LP6kuHV'
 TOTAL_BATCHES = 15
 MIN_WAIT = 2
 MAX_WAIT = 7
+# ============================================
 
+# аргумент батча
 parser = argparse.ArgumentParser()
 parser.add_argument('batch', type=int, help='Batch number (0-14)')
 args = parser.parse_args()
@@ -17,6 +20,7 @@ if not 0 <= args.batch < TOTAL_BATCHES:
 
 print(f'Batch {args.batch + 1} / {TOTAL_BATCHES}')
 
+# настройки Chromium
 options = ChromiumOptions()
 options.headless()
 options.set_argument('--no-sandbox')
@@ -33,6 +37,17 @@ page = ChromiumPage(options)
 try:
     print('Opening Twitch clip...')
     page.get(URL)
+
+    # даём странице прогрузиться
+    time.sleep(1)
+
+    # подтверждение загрузки страницы
+    html = page.html
+    if html:
+        preview = html.replace('\n', ' ').strip()[:30]
+        print(f'Page loaded, first 30 chars: "{preview}"')
+    else:
+        print('Page loaded, but HTML is empty')
 
     wait_time = random.uniform(MIN_WAIT, MAX_WAIT)
     print(f'Staying on page for {wait_time:.2f} seconds')
