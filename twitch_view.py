@@ -6,7 +6,7 @@ from DrissionPage import ChromiumPage, ChromiumOptions
 # ================= НАСТРОЙКИ =================
 URL = 'https://www.twitch.tv/qqros/clip/DaintyGenerousDiamondDBstyle-kAJROjnc4LP6kuHV'
 TOTAL_BATCHES = 15
-INITIAL_WAIT = 10   # фиксированное ожидание
+INITIAL_WAIT = 10   # фиксированное ожидание после загрузки
 MIN_WAIT = 2
 MAX_WAIT = 7
 # ============================================
@@ -48,6 +48,18 @@ try:
         print(f'Page loaded ({len(preview)} chars): "{preview}"')
     else:
         print('Page loaded, but HTML is empty')
+
+    # ====== СКРОЛЛ ======
+    print('Scrolling page...')
+    page.run_js('window.scrollBy(0, 300);')
+    time.sleep(random.uniform(1.0, 2.0))
+
+    page.run_js('window.scrollBy(0, 600);')
+    time.sleep(random.uniform(1.0, 2.0))
+
+    page.run_js('window.scrollBy(0, -200);')
+    print('Scroll finished')
+    # ====================
 
     wait_time = random.uniform(MIN_WAIT, MAX_WAIT)
     print(f'Additional stay: {wait_time:.2f} seconds')
